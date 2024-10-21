@@ -2,6 +2,7 @@
 session_start();
 
 if($_REQUEST){
+
 require "connection.php";
 function fullname($fullname){
     $pattern = '/^[A-Za-z][A-Za-z\'\-]+([\ A-Za-z][A-Za-z\'\-]+)*/';
@@ -63,6 +64,7 @@ $fullNameValidate = fullname($fullname);
 $emailValidate    = email($email);
 $imageValidate    = image($file_iamge);
 $passwordValidate = checkPassword($password,$confirm_password);
+
 
 $successMass = [];
 $errorMsg    = []; 

@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar {
+    height: 100vh;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}

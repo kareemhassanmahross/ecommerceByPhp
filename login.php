@@ -41,8 +41,14 @@ if($_REQUEST){
         If($validpassword === false){
             array_push($errorMsg,"Password is invalid .");
         }else{
-            $_SESSION['user'] = $email;
-            header("Location: profile.php");
+            if($email == "Kareem@admin.com"){
+
+                $_SESSION['user'] = $email;
+                header("Location: dashbord/index.php");
+            }else{
+                $_SESSION['user'] = $email;
+                header("Location: profile.php");
+            }
         }
 
     }
