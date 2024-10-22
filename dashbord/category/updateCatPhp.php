@@ -34,11 +34,9 @@ if($file_iamge == null){
         $name = $_REQUEST['name'];
         $desc = $_REQUEST['desc'];
         $sql  = "UPDATE categories SET `name` = '$name', `desc` = '$desc' WHERE `id` =".$id;
-        echo $sql;
         $stmt = $pdo->prepare($sql);
         $stmt ->execute();
-        $successMass = "Category Updated Successfully";
-        header("Location: showAllCategories.php?".$successMass);
+        header("Location: showAllCategories.php");
     }else{
       echo "<pre>";
       print_r($errorMsg);
@@ -46,5 +44,12 @@ if($file_iamge == null){
     }
 }
 if($file_iamge != null){
-    echo "mogode malaf ";
+    require "../../connection.php";
+    $id = $_REQUEST['id'];
+    $sql = "SELECT `image` FROM `categories` WHERE id = ".$id;
+    $query = $pdo -> prepare($sql);
+    $query ->execute();
+    $data = $query->fetch(PDO::FETCH_ASSOC);
+    $img = $data['image'];
+    // انت كدا جبت الصورة القديمة ناقص تعمل سيرش عشان تعرف تشيل الصورة دية لما تيجى تعمل تعديل
 }
