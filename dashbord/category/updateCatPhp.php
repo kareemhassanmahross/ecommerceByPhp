@@ -43,13 +43,42 @@ if($file_iamge == null){
       echo "</pre>";
     }
 }
+
+
+
+
+#############################################################################
+
+
+
+   
+    $file_iamge = $_FILES['iamge']["tmp_name"];
 if($file_iamge != null){
     require "../../connection.php";
+    $name = $_REQUEST['name'];
+    $desc = $_REQUEST['desc'];
     $id = $_REQUEST['id'];
-    $sql = "SELECT `image` FROM `categories` WHERE id = ".$id;
+    $sql = "SELECT * FROM `categories` WHERE id = ".$id;
     $query = $pdo -> prepare($sql);
     $query ->execute();
     $data = $query->fetch(PDO::FETCH_ASSOC);
     $img = $data['image'];
-    // انت كدا جبت الصورة القديمة ناقص تعمل سيرش عشان تعرف تشيل الصورة دية لما تيجى تعمل تعديل
-}
+    $fileName = pathinfo($_FILES['iamge']['name']);
+        $fileExtension = $fileName['extension'];
+        $fileSize = $_FILES['iamge']['size'];
+        $ss = time() * $fileSize;
+        $newFileName = $fileName['filename'] . '_' . $fileSize . '_' .time() ."_" . $ss . '.' . $fileExtension;
+        $LocationImage = "imagesCategory/" . $newFileName;
+        
+        
+        $sql = "UPDATE categories SET 
+        `name` = '$name', 
+        `desc` = '$desc' ,
+        `image`='$newFileName' WHERE `id` =".$id;
+        echo $sql;
+        move_uploaded_file( $_FILES['iamge']['tmp_name'], $LocationImage );
+        unlink("imagesCategory/".$img);
+        $stmt = $pdo->prepare($sql);
+        $stmt ->execute();
+        header("Location: showAllCategories.php");
+}    

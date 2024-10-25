@@ -120,6 +120,30 @@ if($_REQUEST){
                     <li class="nav-item">
                         <a class="nav-link" href="#">Settings</a>
                     </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="showallCategories.php">Categories</a></li>
+                            <li><a class="dropdown-item" href="addCategory.php">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Orders</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li><a class="dropdown-item" href="#">Add Order</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Customers</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Customers</a></li>
+                            <li><a class="dropdown-item" href="#">Add Customer</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

@@ -52,6 +52,30 @@ if($_REQUEST){
                     <li class="nav-item">
                         <a class="nav-link" href="#">Settings</a>
                     </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="showallCategories.php">Categories</a></li>
+                            <li><a class="dropdown-item" href="addCategory.php">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Orders</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li><a class="dropdown-item" href="#">Add Order</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Customers</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Customers</a></li>
+                            <li><a class="dropdown-item" href="#">Add Customer</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -128,26 +152,29 @@ if($_REQUEST){
                 </div>
                 <h2>Add Category</h2>
                 <div class="table-responsive">
+                       
                     <form action="updateCatPhp.php" method="post" enctype="multipart/form-data">
                        
-                        <?php foreach($data as $cat) { ?>
-                            <input type="text" value="<?= $cat['id']?>" name="id">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="<?= $cat['name']?>">
-                        </div>
-                        <div class="mb-3">
-                            <label for="floatingTextarea2">Category Description</label>
-                            <textarea class="form-control" placeholder="Leave a comment here" name="desc"
-                             id="floatingTextarea2" style="height: 200px"><?= $cat['desc']?></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="formFileLg" class="form-label">Image</label>
-                            <input class="form-control form-control-lg " name="iamge" id="formFileLg" type="file">
-                            <img src="imagesCategory/<?= $cat['image']?>" class="mt-2" width = "100px">
-                        </div>
-                        <?php }?>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                       <?php foreach($data as $cat) { ?>
+                           <input type="text" value="<?= $cat['id']?>" name="id">
+                       <div class="mb-3">
+                           <label for="name" class="form-label">Category Name</label>
+                           <input type="text" class="form-control" id="name" name="name" value="<?= $cat['name']?>">
+                       </div>
+                       <div class="mb-3">
+                           <label for="floatingTextarea2">Category Description</label>
+                           <textarea class="form-control" placeholder="Leave a comment here" name="desc"
+                            id="floatingTextarea2" style="height: 200px"><?= $cat['desc']?></textarea>
+                       </div>
+                       <div class="mb-3">
+                           <label for="formFileLg" class="form-label">Image</label>
+                           <input class="form-control form-control-lg" name="iamge" id="formFileLg" type="file">
+                           <img src="imagesCategory/<?= $cat['image']?>" class="mt-2" width = "100px">
+                       </div>
+                       <?php }?>
+                       <button type="submit" class="btn btn-primary">Submit</button>
+                   </form>
+                
                     </form>
                 </div>
             </main>

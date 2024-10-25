@@ -50,6 +50,30 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <li class="nav-item">
                         <a class="nav-link" href="#">Settings</a>
                     </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Categories</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="showallCategories.php">Categories</a></li>
+                            <li><a class="dropdown-item" href="addCategory.php">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Orders</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Orders</a></li>
+                            <li><a class="dropdown-item" href="#">Add Order</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Customers</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Customers</a></li>
+                            <li><a class="dropdown-item" href="#">Add Customer</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -59,14 +83,19 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
+
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
                 <div class="position-sticky">
                     <ul class="nav flex-column">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="../index.php">
                                 Dashboard
                             </a>
-                        </li>
+                        </li> -->
 
                         <!-- Dropdown Menu -->
                         <li class="nav-item">
@@ -125,8 +154,8 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </div>
                 <h2>Section title</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped table-sm">
+                <div class="table-responsive d-none d-md-block">
+                    <table class="table table-striped ">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -143,20 +172,17 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <tr>
                                 <td><?php  echo $cat['id'] ; ?></td>
                                 <td><?php  echo $cat['name'] ; ?></td>
-                                <td><?php  echo $cat['desc'] ; ?></td>
-                                <td><img src="imagesCategory/<?php echo $cat['image']; ?>" width="100px" height="100px"></td>
+                                <td class=""><?php  echo $cat['desc'] ; ?></td>
+                                <td><img src="imagesCategory/<?php echo $cat['image']; ?>" width="100px" height="100px">
+                                </td>
                                 <td>
-                                    <form action="">
+                                    <form action="deleteCat.php" method="POST">
+                                        <input type="hidden" name="id" value="<?php echo $cat['id'] ; ?>">
                                         <input type="submit" value="Delete" class="btn btn-danger">
                                     </form>
                                 </td>
                                 <td>
-                                    <form action="">
-                                        <input type="submit" value="Show" class="btn btn-info">
-                                    </form>
-                                </td>
-                                <td>
-                                    <form action = "updateCategory.php" method = "get" >
+                                    <form action="updateCategory.php" method="get">
                                         <input type="hidden" name="id" value="<?php echo $cat['id'] ; ?>">
                                         <input type="submit" value="Update" class="btn btn-primary">
                                     </form>
@@ -166,6 +192,32 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         </tbody>
                     </table>
+                </div>
+                <div class=" d-block d-md-none ">
+                    <?php foreach($row as $cat) { ?>
+                    <div class="card my-5">
+                        <div class="card-header">
+                            <?= $cat['name'] ?>
+                        </div>
+                        <div class="card-body">
+                            <img src="imagesCategory/<?php echo $cat['image']; ?>" width="150px" height="150px">
+                            <p class="card-text pt-5"><?= $cat['desc'] ?>
+                            </p>
+                            <div class="w-100">
+                                <form action="updateCategory.php" method="get">
+                                    <input type="hidden" name="id" value="<?php echo $cat['id'] ; ?>">
+                                    <input type="submit" value="Update" class="btn btn-primary w-100">
+                                </form>
+                            </div>
+                            <div>
+                                <form action="">
+                                    <input type="hidden" name="id" value="<?php echo $cat['id'] ; ?>">
+                                    <input type="submit" value="Delete" class="btn btn-danger w-100">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
             </main>
         </div>

@@ -22,10 +22,10 @@ function image($file_iamge){
         $fileName = pathinfo($_FILES['iamge']['name']);
         $fileExtension = $fileName['extension'];
         $fileSize = $_FILES['iamge']['size'];
-        if($fileSize > 2000000){
-            $errorMsg = "File is Over 2 Mb in size <br>";
-            return $errorMsg;
-        }
+        // if($fileSize > 2000000){
+        //     $errorMsg = "File is Over 2 Mb in size <br>";
+        //     return $errorMsg;
+        // }
     
         $allowedExtension = array('jpeg','png','jpg','jfif');
          
