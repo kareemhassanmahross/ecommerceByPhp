@@ -67,21 +67,15 @@
             </div>
         </div>
     </nav>
-
-    <!-- Main Content Wrapper -->
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
                 <div class="position-sticky">
                     <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page">
-                                Dashboard
-                            </a>
-                        </li>
-
-                        <!-- Dropdown Menu -->
                         <li class="nav-item">
                             <a class="nav-link" href="" data-bs-toggle="collapse" data-bs-target="#submenu1"
                                 aria-expanded="false">

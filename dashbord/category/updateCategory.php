@@ -86,14 +86,12 @@ if($_REQUEST){
         <div class="row">
             <!-- Sidebar -->
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                </div>
                 <div class="position-sticky">
                     <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="../index.php">
-                                Dashboard
-                            </a>
-                        </li>
-
                         <!-- Dropdown Menu -->
                         <li class="nav-item">
                             <a class="nav-link" href="category/addCategory.php" data-bs-toggle="collapse"
@@ -112,7 +110,23 @@ if($_REQUEST){
                                 </ul>
                             </div>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="" data-bs-toggle="collapse" data-bs-target="#Product"
+                                aria-expanded="false">
+                                Products
+                            </a>
+                            <div class="collapse" id="Product">
+                                <ul class="nav flex-column ms-3">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="../products/products.php">Products</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="../products/addproduct.php">Add Product</a>
+                                    </li>
+                                </ul>
+                            </div>
+        
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu2"
                                 aria-expanded="false">

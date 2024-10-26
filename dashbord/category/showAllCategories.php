@@ -115,7 +115,23 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </ul>
                             </div>
                         </li>
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="" data-bs-toggle="collapse" data-bs-target="#Product"
+                                aria-expanded="false">
+                                Products
+                            </a>
+                            <div class="collapse" id="Product">
+                                <ul class="nav flex-column ms-3">
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="../products/products.php">Products</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="../products/addproduct.php">Add Product</a>
+                                    </li>
+                                </ul>
+                            </div>
+        
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu2"
                                 aria-expanded="false">
