@@ -62,6 +62,14 @@ if($_REQUEST){
                     </li>
                     <li class="nav-item d-lg-none">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Products</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../products/products.php">products</a></li>
+                            <li><a class="dropdown-item" href="../products/addproduct.php">Add product</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">Orders</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Orders</a></li>

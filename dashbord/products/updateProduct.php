@@ -1,6 +1,8 @@
 <?php 
-    require "../../connection.php";
+require "../../connection.php";
 
+if($_REQUEST){
+    $id = $_REQUEST['id'];
     $sql = "SELECT 
     p.`id`,
     p.`name`,
@@ -12,12 +14,26 @@
     c.`name` as `namecat`
     FROM  `products` p
     INNER JOIN  `categories` c
-    ON c.id = p.category_id 
-    GROUP BY p.id ";
-    $stmt = $pdo->prepare($sql); 
+    ON c.id = p.category_id AND p.id = '$id'
+    GROUP BY p.id";
+    $stmt = $pdo ->prepare($sql);
     $stmt -> execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+    $sql = "SELECT `id`,`name` from `categories` WHERE id != ".$product['category_id'];
+    $stmt = $pdo ->prepare($sql);
+    $stmt -> execute();
+    $cats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+
 ?>
+
+
+
 
 
 <!DOCTYPE html>
@@ -57,8 +73,8 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">Categories</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="../category/showAllCategories.php">Categories</a></li>
-                            <li><a class="dropdown-item" href="../category/addCategory.php">Add Category</a></li>
+                            <li><a class="dropdown-item" href="showallCategories.php">Categories</a></li>
+                            <li><a class="dropdown-item" href="addCategory.php">Add Category</a></li>
                         </ul>
                     </li>
                     <li class="nav-item d-lg-none">
@@ -94,14 +110,14 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-
             <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-                <div
+            <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
                 </div>
                 <div class="position-sticky">
                     <ul class="nav flex-column">
+                        <!-- Dropdown Menu -->
                         <li class="nav-item">
                             <a class="nav-link" href="category/addCategory.php" data-bs-toggle="collapse"
                                 data-bs-target="#submenu1" aria-expanded="false">
@@ -115,6 +131,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link" href="../category/addCategory.php">Add Category</a>
                                     </li>
+                               
                                 </ul>
                             </div>
                         </li>
@@ -126,15 +143,15 @@
                             <div class="collapse" id="Product">
                                 <ul class="nav flex-column ms-3">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="products.php">Products</a>
+                                        <a class="nav-link" href="../products/products.php">Products</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="addproduct.php">Add Product</a>
+                                        <a class="nav-link" href="../products/addproduct.php">Add Product</a>
                                     </li>
                                 </ul>
                             </div>
+        
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu2"
                                 aria-expanded="false">
@@ -172,77 +189,48 @@
                         <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
                     </div>
                 </div>
-                <h2>Section title</h2>
-                <div class="table-responsive d-none d-md-block">
-                    <table class="table table-striped ">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Category Name</th>
-                                <th>Description</th>
-                                <th>price</th>
-                                <th>amount</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach($products as $pro) { ?>
-
-                            <tr>
-                                <td><?= $pro['id'] ?></td>
-                                <td><img src="imagesProduct/<?php echo $pro['image']; ?>" width="100px" height="100px">
-                                </td>
-                                <td><?= $pro['name'] ?></td>
-                                <td><?= $pro['namecat'] ?></td>
-                                <td><?= $pro['desc'] ?></td>
-                                <td><?= $pro['price'] ?></td>
-                                <td><?= $pro['amount'] ?></td>
-                                <td>
-                                    <form action="deleteProduct.php" method="get">
-                                        <input type="hidden" name="id" value="<?= $pro['id'] ?>">
-                                        <input type="submit" value="Delete" class="btn btn-danger">
-                                    </form>
-                                </td>
-                                <td>
-                                    <form action="updateProduct.php" method="get">
-                                        <input type="hidden" name="id" value="<?= $pro['id'] ?>">
-                                        <input type="submit" value="Update" class="btn btn-primary">
-                                    </form>
-                                </td>
-                            </tr>
-                            <?php }?>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class=" d-block d-md-none ">
-                    <?php foreach($products as $pro) { ?>
-                    <div class="card my-5">
-                        <div class="card-header">
-                            <?= $pro['name'] ?>
+                <h2>Add Category</h2>
+                <div class="table-responsive">
+                       
+                <form action="updatePro.php" method="post" enctype="multipart/form-data">
+                    <input type="text" value="<?= $product['id']?>" name="id">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Product Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value ="<?= $product['name']?>">
                         </div>
-                        <div class="card-body">
-                            <img src="imagesProduct/<?php echo $pro['image']; ?>" width="150px" height="150px">
-                            <p class="mt-2"><strong class='h4 '>price : </strong><?= $pro['price'] ?> $</p>
-                            <p class="d-block"><strong class='h4'>Amount : </strong><?= $pro['amount'] ?></p>
-                            <p class="card-text pt-5"><?= $pro['desc'] ?></p>
-                            <div class="w-100">
-                                <form action="updateProduct.php" method="get">
-                                    <input type="hidden" name="id" value="<?= $pro['id'] ?>">
-                                    <input type="submit" value="Update" class="btn btn-primary w-100">
-                                </form>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <div class="col-3">
+                                <label for="Price" class="form-label">Product Price</label>
+                                <input type="number" class="form-control" id="Price" name="price" value ="<?= $product['price']?>">
                             </div>
-                            <div>
-                                <form action="deleteProduct.php" method="get">
-                                    <input type="hidden" name="id" value="<?php echo $pro['id'] ; ?>">
-                                    <input type="submit" value="Delete" class="btn btn-danger w-100">
-                                </form>
+                            <div class="col-3">
+                                <label for="Amount" class="form-label">Product Amount</label>
+                                <input type="number" class="form-control" id="Amount" name="amount" value ="<?= $product['amount']?>">
+                            </div>
+                            <div class="col-3">
+                                <label for="name" class="form-label">Category Product</label>
+                                <select name="category_id" class="form-select" aria-label="Default select example">
+                                    <option value="<?= $product['category_id']?>" selected><?= $product['namecat']?></option>
+                                    <?php foreach($cats as $cat){ ?>
+                                    <option name="category_id" value="<?=$cat['id']?>"><?=$cat['name']?></option>
+                                    <?php }?>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <?php } ?>
+                        <div class="mb-3">
+                            <label for="floatingTextarea2">Product Description</label>
+                            <textarea class="form-control" placeholder="Leave a comment here" name="desc"
+                                id="floatingTextarea2" style="height: 100px"><?= $product['desc']?></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFileLg" class="form-label">Image</label>
+                            <input class="form-control form-control-lg" name="iamge" id="formFileLg" type="file">
+                            <img src="imagesProduct/<?= $product['image']?>"width="200px" height="150px">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                
+                    </form>
                 </div>
             </main>
         </div>

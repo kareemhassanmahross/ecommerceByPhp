@@ -177,8 +177,16 @@ if($_REQUEST){
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
                             aria-expanded="false">Categories</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="showallCategories.php">Categories</a></li>
-                            <li><a class="dropdown-item" href="addCategory.php">Add Category</a></li>
+                            <li><a class="dropdown-item" href="../category/showallCategories.php">Categories</a></li>
+                            <li><a class="dropdown-item" href="../category/addCategory.php">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Products</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="Products.php">Products</a></li>
+                            <li><a class="dropdown-item" href="addproduct.php">Add Products</a></li>
                         </ul>
                     </li>
                     <li class="nav-item d-lg-none">

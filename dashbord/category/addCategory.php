@@ -49,8 +49,8 @@ if($_REQUEST){
 
      $errorMsg = [];
      $successMsg = []; 
-
-    if($nameValidate == 1 && $descValidate == 1 && $imageValidate == 1 ){
+##&
+    if($nameValidate == 1 && $descValidate == 1  & $imageValidate == 1){
         $fileName = pathinfo($_FILES['iamge']['name']);
         $fileExtension = $fileName['extension'];
         $fileSize = $_FILES['iamge']['size'];
@@ -126,6 +126,14 @@ if($_REQUEST){
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="showallCategories.php">Categories</a></li>
                             <li><a class="dropdown-item" href="addCategory.php">Add Category</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item d-lg-none">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false">Products</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../products/products.php">products</a></li>
+                            <li><a class="dropdown-item" href="../products/addproduct.php">Add product</a></li>
                         </ul>
                     </li>
                     <li class="nav-item d-lg-none">

@@ -75,7 +75,6 @@ if($file_iamge != null){
         `name` = '$name', 
         `desc` = '$desc' ,
         `image`='$newFileName' WHERE `id` =".$id;
-        echo $sql;
         move_uploaded_file( $_FILES['iamge']['tmp_name'], $LocationImage );
         unlink("imagesCategory/".$img);
         $stmt = $pdo->prepare($sql);
