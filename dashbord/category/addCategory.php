@@ -49,7 +49,7 @@ if($_REQUEST){
 
      $errorMsg = [];
      $successMsg = []; 
-##&
+
     if($nameValidate == 1 && $descValidate == 1  & $imageValidate == 1){
         $fileName = pathinfo($_FILES['iamge']['name']);
         $fileExtension = $fileName['extension'];

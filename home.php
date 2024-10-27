@@ -1,3 +1,23 @@
+<?php
+require "connection.php";
+$sql = "SELECT 
+p.`id`,
+p.`name`,
+p.`desc`,
+p.`image`,
+p.`price`,
+p.`amount`,
+p.`category_id`,
+c.`name` as `namecat`,
+c.`desc` as `desccat`,
+c.`image` as `imagecat`
+FROM  `products` p
+INNER JOIN  `categories` c
+ON c.id = p.category_id 
+GROUP BY p.id ";
+// انت دلوقتى عايز تعمل 2 اراى و احد عان ترمى فية الداتا بتاعت الكاتيجورى و التانية بتاعت البروداكت
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,13 +79,16 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Categories</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.php">Store</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact Us</a>
@@ -80,7 +103,7 @@
         <div class="container">
             <h2 class="text-center">Categories</h2>
             <div class="row">
-                <!-- Category 1 -->
+                <!-- #################################################################### -->
                 <div class="col-md-4 mb-4">
                     <div class="card category-card">
                         <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Category 1">
@@ -88,25 +111,7 @@
                             <h5 class="card-title text-center">Category 1</h5>
                         </div>
                     </div>
-                </div>
-                <!-- Category 2 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card category-card">
-                        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Category 2">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Category 2</h5>
-                        </div>
-                    </div>
-                </div>
-                <!-- Category 3 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card category-card">
-                        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Category 3">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Category 3</h5>
-                        </div>
-                    </div>
-                </div>
+                </div>           
             </div>
         </div>
     </section>
