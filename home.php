@@ -15,7 +15,9 @@ FROM  `products` p
 INNER JOIN  `categories` c
 ON c.id = p.category_id 
 GROUP BY p.id ";
-// انت دلوقتى عايز تعمل 2 اراى و احد عان ترمى فية الداتا بتاعت الكاتيجورى و التانية بتاعت البروداكت
+$stmt = $pdo->prepare($sql);
+$stmt -> execute();
+$Data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -48,7 +50,7 @@ GROUP BY p.id ";
             transform: scale(1.05);
         }
 
-        .product-card img {
+        /* .product-card img {
             max-height: 200px;
             object-fit: cover;
         }
@@ -57,7 +59,7 @@ GROUP BY p.id ";
             max-height: 150px;
             object-fit: cover;
             border-radius: 8px;
-        }
+        } */
 
         footer {
             background-color: #343a40;
@@ -104,14 +106,7 @@ GROUP BY p.id ";
             <h2 class="text-center">Categories</h2>
             <div class="row">
                 <!-- #################################################################### -->
-                <div class="col-md-4 mb-4">
-                    <div class="card category-card">
-                        <img src="https://via.placeholder.com/500x300" class="card-img-top" alt="Category 1">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">Category 1</h5>
-                        </div>
-                    </div>
-                </div>           
+              
             </div>
         </div>
     </section>
@@ -121,50 +116,18 @@ GROUP BY p.id ";
         <div class="container">
             <h2 class="text-center">Products</h2>
             <div class="row">
-                <!-- Product 1 -->
+              <?php  foreach($Data as $data) { ?>
                 <div class="col-md-3 mb-4">
                     <div class="card product-card">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 1">
+                        <img src="dashbord/products/imagesProduct/<?= $data['image'] ?>" width="305px" height="220px" alt="Product 1">
                         <div class="card-body text-center">
-                            <h5 class="card-title">Product 1</h5>
-                            <p class="card-text">$49.99</p>
+                            <h5 class="card-title"><?= $data['name'] ?></h5>
+                            <p class="card-text"><?= $data['price'] ?> $</p>
                             <a href="#" class="btn btn-primary">View Product</a>
                         </div>
                     </div>
                 </div>
-                <!-- Product 2 -->
-                <div class="col-md-3 mb-4">
-                    <div class="card product-card">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 2">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Product 2</h5>
-                            <p class="card-text">$69.99</p>
-                            <a href="#" class="btn btn-primary">View Product</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product 3 -->
-                <div class="col-md-3 mb-4">
-                    <div class="card product-card">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 3">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Product 3</h5>
-                            <p class="card-text">$89.99</p>
-                            <a href="#" class="btn btn-primary">View Product</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Product 4 -->
-                <div class="col-md-3 mb-4">
-                    <div class="card product-card">
-                        <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Product 4">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Product 4</h5>
-                            <p class="card-text">$99.99</p>
-                            <a href="#" class="btn btn-primary">View Product</a>
-                        </div>
-                    </div>
-                </div>
+                <?php }?>
             </div>
         </div>
     </section>
