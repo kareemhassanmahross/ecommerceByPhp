@@ -32,7 +32,7 @@ if($_REQUEST){
 
 
 
-  for($i = 8 ; $i <= $number ; $i++){
+  for($i = 1 ; $i <= $number ; $i++){
       array_push($data,[
         'name'  => "Cat".$i,
         "desc"  => "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",

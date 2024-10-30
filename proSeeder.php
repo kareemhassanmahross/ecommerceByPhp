@@ -49,7 +49,7 @@ $image = array(
   }
   function randcat($countCat){
     $index = [];
-    for($i = 8 ; $i<=$countCat ; $i++){
+    for($i = 1 ; $i<=$countCat ; $i++){
         array_push($index , $i);
     }
     //   echo "<pre>";

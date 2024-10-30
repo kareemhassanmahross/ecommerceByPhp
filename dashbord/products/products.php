@@ -1,7 +1,11 @@
 <?php 
     require "../../connection.php";
-
-    $sql = "SELECT 
+    $page = isset($_REQUEST['page']) ?(int)$_REQUEST['page'] : 1; 
+    $prePage = isset($_REQUEST["prePage"]) && $_REQUEST["prePage"] <= 50? (int)$_REQUEST['prePage'] : 50;
+    
+    
+    $start = ($page > 1) ? ($page * $prePage) - $prePage : 0;
+    $sql = "SELECT SQL_CALC_FOUND_ROWS
     p.`id`,
     p.`name`,
     p.`desc`,
@@ -13,10 +17,16 @@
     FROM  `products` p
     INNER JOIN  `categories` c
     ON c.id = p.category_id 
-    GROUP BY p.id ";
+    GROUP BY p.id 
+    LIMIT {$start} , {$prePage}";
     $stmt = $pdo->prepare($sql); 
     $stmt -> execute();
     $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $total = $pdo->query("SELECT FOUND_ROWS() As total")->fetch()['total'];
+
+
+$pages = ceil($total / $prePage);
 ?>
 
 
@@ -216,6 +226,17 @@
 
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <div >
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <?php for($i = 1 ; $i <= $pages ; $i++) { ?>
+                                <li class="page-item"><a class="page-link <?php if($page === $i) {echo "active" ;}?>"
+                                        href="?page=<?=$i?>&<?=$prePage?>"><?= $i; ?></a></li>
+                                <?php } ?>
+
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
                 <div class=" d-block d-md-none ">
                     <?php foreach($products as $pro) { ?>

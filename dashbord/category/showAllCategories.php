@@ -2,13 +2,21 @@
 
 require "../../connection.php";
 
+$page = isset($_REQUEST['page']) ?(int)$_REQUEST['page'] : 1; 
+$prePage = isset($_REQUEST["prePage"]) && $_REQUEST["prePage"] <= 50? (int)$_REQUEST['prePage'] : 5;
 
 
-$sql  = "SELECT * FROM categories "; 
+$start = ($page > 1) ? ($page * $prePage) - $prePage : 0;
+
+$sql  = "SELECT SQL_CALC_FOUND_ROWS * FROM categories LIMIT {$start} , {$prePage}"; 
 $stmt = $pdo->prepare($sql); 
 $stmt -> execute();
 $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$total = $pdo->query("SELECT FOUND_ROWS() As total")->fetch()['total'];
+
+
+$pages = ceil($total / $prePage);
 ################################################
 
 
@@ -138,7 +146,7 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </li>
                                 </ul>
                             </div>
-        
+
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-bs-toggle="collapse" data-bs-target="#submenu2"
@@ -216,6 +224,17 @@ $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                         </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                        <div >
+                            <ul class="pagination pagination-lg justify-content-center">
+                                <?php for($i = 1 ; $i <= $pages ; $i++) { ?>
+                                <li class="page-item"><a class="page-link <?php if($page === $i) {echo "active" ;}?>"
+                                        href="?page=<?=$i?>&<?=$prePage?>"><?= $i; ?></a></li>
+                                <?php } ?>
+
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
                 <div class=" d-block d-md-none ">
                     <?php foreach($row as $cat) { ?>
