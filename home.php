@@ -22,7 +22,7 @@ $pages = ceil($total / $prePage);
 
 
 $page1 = isset($_REQUEST['page1']) ?(int)$_REQUEST['page1'] : 1; 
-$prePage1 = isset($_REQUEST["prePage1"]) && $_REQUEST["prePage1"] <= 50? (int)$_REQUEST['prePage1'] : 48;
+$prePage1 = isset($_REQUEST["prePage1"]) && $_REQUEST["prePage1"] <= 50? (int)$_REQUEST['prePage1'] : 20;
 
 
 $start1 = ($page1 > 1) ? ($page1 * $prePage1) - $prePage1 : 0;
@@ -149,7 +149,6 @@ $pages1 = ceil($total1 / $prePage1);
             <div class="row">
                 <!-- #################################################################### -->
                 <?php  foreach($DataCat as $data) { ?>
-
                 <div class="col-md-4 mb-4">
                     <a href="showCat.php?id=<?=$data['id']?>">
                         <div class="card category-card">
@@ -184,7 +183,7 @@ $pages1 = ceil($total1 / $prePage1);
             <h2 class="text-center">Products</h2>
             <div class="row" id="cards">
                 <?php  foreach($Data as $data) { ?>
-                <div class="col-2 mb-4 card">
+                <div class="col-md-3 mb-4 card">
                     <div class="card product-card">
                         <img src="dashbord/products/imagesProduct/<?= $data['image'] ?>" height="220px" alt="Product 1">
                         <input type="hidden" name="" class="name" id="name" value="<?=$data['name'] ;?>">
@@ -196,13 +195,10 @@ $pages1 = ceil($total1 / $prePage1);
                         <div class="card-body text-center">
                             <h5 class="card-title"><?= $data['name'] ?></h5>
                             <p class="card-text"><?= $data['price'] ?> $</p>
-                            <!-- <form action="" method="post"> -->
                             <input type="hidden" name="id" id="productIdInput" class="productId"
                                 value="<?= $data['id'] ?>">
-                            <!-- <a href="#" class="btn btn-primary">View Product</a> -->
                             <input type="submit" id="addProductButton" class="btn btn-primary addToCartButton"
                                 value="Add Card">
-                            <!-- </form> -->
                         </div>
                     </div>
                 </div>
@@ -229,25 +225,11 @@ $pages1 = ceil($total1 / $prePage1);
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
     const button = document.getElementById("addlocalStorage");
-
-    // button.addEventListener("click", function() {});
     let Products = <?php echo json_encode($Data); ?>;
-
-
-
-
-
-
-    // productIds.push(productId);
-    // console.log(productIdInput);
-    // Add event listener to the button
-
-
-    // let cart = [];
     document.getElementById('cards').addEventListener('click', (event) => {
         if (event.target.classList.contains('addToCartButton')) {
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -266,22 +248,17 @@ $pages1 = ceil($total1 / $prePage1);
                 price,
                 amount,
                 desc,
-                image
+                image,
             });
             localStorage.setItem('cart', JSON.stringify(cart));
             let div = document.getElementById('myDiv');
             div.innerHTML = cart.length;
             // localStorage.clear();
         }
-
-        // localStorage.setItem("cart", JSON.stringify(cart));
-        // console.log(cart);
     });
-
     function updateCartCount() {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let itemCount = cart.length;
-
         document.getElementById('myDiv').textContent = itemCount;
     }
     window.onload = updateCartCount;

@@ -134,19 +134,73 @@ $count1 = count($errorMsg);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles/style.css" rel="stylesheet">
+    <!-- <link href="styles/style.css" rel="stylesheet"> -->
+    <style>
+    /* Full-page background */
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: #f0f2f5;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
 
+    /* Card styling */
+    .card {
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 1s ease forwards;
+        /* Fade-in animation */
+    }
+
+    /* Animation for card */
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Input focus and hover styling */
+    .form-control:focus,
+    .form-control:hover {
+        box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
+        transition: box-shadow 0.3s;
+    }
+
+    /* Button styling */
+    .btn-primary {
+        background-color: #4a90e2;
+        border: none;
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #357abd;
+        transform: translateY(-3px);
+        /* Subtle hover lift */
+    }
+    </style>
 </head>
 
 <body>
-    <div class="container">
+    <div class="card">
 
         <?php
          if(isset($count)){
          if($count >= 1) { 
          if(isset($successMass)) { ?>
         <div class="alert alert-success" role="alert">
-        <ul>
+            <ul>
                 <?php foreach($successMass as $em) {
                       echo "<li>".$em."</li>";
                 }
@@ -171,27 +225,31 @@ $count1 = count($errorMsg);
 
         <h1> Register </h1>
         <form method="post" enctype="multipart/form-data">
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="fullname">Full Name</label>
-                <input type="text" class="form-control" id="fullname" name="fullname" >
+                <input type="text" class="form-control" id="fullname" name="fullname">
             </div>
-            <div class="form-group">
-                <label for="email">E-Mail</label>
-                <input type="text" class="form-control" id="email" name="email" >
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email"
+                    >
             </div>
-            <div>
+            <div class="mb-3">
                 <label for="formFile" class="form-label">Image</label>
                 <input class="form-control" type="file" id="formFile" name="iamge">
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" >
+                <input type="password" class="form-control" id="password" name="password">
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 <label for="confirm-password">confirm-password</label>
-                <input type="password" class="form-control" id="confirm-password" name="confirm-password" >
+                <input type="password" class="form-control" id="confirm-password" name="confirm-password">
             </div>
-            <input class="btn  l-btn" type="submit" value="Submit">
+            <input class="btn btn-primary w-100" type="submit" value="Submit">
+            <div class="text-center mt-3">
+            <a href="Login.php">If do you have an account? Login</a>
+        </div>
         </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
