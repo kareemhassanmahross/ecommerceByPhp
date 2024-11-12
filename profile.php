@@ -64,7 +64,7 @@ if($email){
             <div class="col-md-6">
                 <h2 class="text-center">User Profile</h2>
                 <div class="profile-info">
-                    <img src="imagesUsers/<?php echo $user['image'] ?>" alt="Profile Image" class="profile-image"
+                    <img src="imagesUsers/<?php echo $image ?>" alt="Profile Image" class="profile-image"
                         width="100px">
                     <h3>Full Name: <span id="fullname"><?php echo $user['fullname'] ?></span></h3>
                     <p>Email: <span id="email"><?php echo $user['email'] ?></span></p>

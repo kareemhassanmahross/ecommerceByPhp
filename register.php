@@ -4,6 +4,9 @@ session_start();
 if($_REQUEST){
 
 require "connection.php";
+echo "<pre>";
+print_r($_FILES);
+echo "</pre><br>";
 function fullname($fullname){
     $pattern = '/^[A-Za-z][A-Za-z\'\-]+([\ A-Za-z][A-Za-z\'\-]+)*/';
     $checkName = preg_match($pattern, $fullname);
@@ -19,9 +22,9 @@ function email($email){
 
 function image($file_iamge){
     if(!empty($file_iamge)){
-        $fileName = pathinfo($_FILES['iamge']['name']);
+        $fileName = pathinfo($_FILES['image']['name']);
         $fileExtension = $fileName['extension'];
-        $fileSize = $_FILES['iamge']['size'];
+        $fileSize = $_FILES['image']['size'];
         // if($fileSize > 2000000){
         //     $errorMsg = "File is Over 2 Mb in size <br>";
         //     return $errorMsg;
@@ -55,7 +58,8 @@ function checkPassword($password, $confirm_password){
      }
 }
 
-$file_iamge       = $_FILES['iamge']['tmp_name'];
+$file_iamge       = $_FILES['image']['tmp_name'];
+
 $fullname         = $_REQUEST['fullname'];
 $email            = $_REQUEST['email'];
 $password         = $_REQUEST['password'];
@@ -72,11 +76,12 @@ $errorMsg    = [];
 
 if($imageValidate == 1 && $fullNameValidate == 1  && $emailValidate == 1 && $passwordValidate == 1){
     
-    $fileName = pathinfo($_FILES['iamge']['name']);
+    $fileName = pathinfo($_FILES['image']['name']);
     $fileExtension = $fileName['extension'];
-    $fileSize = $_FILES['iamge']['size'];
+    $fileSize = $_FILES['image']['size'];
     $ss = time() * $fileSize;
     $newFileName = $fileName['filename'] . '_' . $fileSize . '_' .time() ."_" . $ss . '.' . $fileExtension;
+    echo $newFileName;
     $LocationImage = "imagesUsers/" . $newFileName;
 
     $fullname = $_REQUEST['fullname'];
@@ -96,7 +101,7 @@ if($imageValidate == 1 && $fullNameValidate == 1  && $emailValidate == 1 && $pas
     $row = $stmt -> fetch(PDO::FETCH_ASSOC);
     if($row['num'] == 0 ){
         $sql = "INSERT INTO users (fullname,email,password,image) VALUES (:fullname, :email, :password, :image)";
-        move_uploaded_file( $_FILES['iamge']['tmp_name'], $LocationImage );
+        move_uploaded_file( $_FILES['image']['tmp_name'], $LocationImage );
         $pdo->prepare($sql)->execute($data);
         $_SESSION['user'] = $data['email'];
         array_push($successMass,"You Are Registerd Successfully");
@@ -113,9 +118,9 @@ if($fullNameValidate != 1){
 if($emailValidate != 1){
     array_push($errorMsg,"Email Must Be like 'example@example.com'");
 }
-if($imageValidate != 1){
-    array_push($errorMsg,$imageValidate);
-}
+// if($imageValidate != 1){
+//     array_push($errorMsg,$imageValidate);
+// }
 if($passwordValidate != 1){
     array_push($errorMsg,$passwordValidate);
 }
@@ -236,7 +241,7 @@ $count1 = count($errorMsg);
             </div>
             <div class="mb-3">
                 <label for="formFile" class="form-label">Image</label>
-                <input class="form-control" type="file" id="formFile" name="iamge">
+                <input class="form-control" type="file" id="formFile" name="image">
             </div>
             <div class="mb-3">
                 <label for="password">Password</label>
