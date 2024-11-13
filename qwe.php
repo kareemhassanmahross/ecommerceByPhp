@@ -1,27 +1,51 @@
 <?php
 require "connection.php";
 session_start();
+// echo $_SESSION['order'];
+if(isset($_SESSION['user'])){
+    $getUserId = "SELECT id FROM users WHERE email = "."'".$_SESSION['user']."'";
+    $stmt = $pdo->prepare($getUserId);
+    $stmt -> execute();
+    $userID = $stmt->fetch(PDO::FETCH_ASSOC);
+    $orderByUserIdAndOrderID = "SELECT id  ,  COUNT(*)  AS countOrder FROM orders Where `status` = 1 AND user_id = ".$userID['id'];
+    $stmt = $pdo->prepare($orderByUserIdAndOrderID);
+    $stmt -> execute();
+    $orderStatus = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($orderStatus['countOrder'] == 1){
+        $sqlGetOrderItemsByOrderId = "SELECT quantity FROM order_items WHERE order_id = ".$orderStatus['id'];
+        $stmt = $pdo->prepare($sqlGetOrderItemsByOrderId);
+        $stmt -> execute();
+        $quantityOrderItemsByOrderId = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sumQuantity=0;
+        foreach($quantityOrderItemsByOrderId as $sq){
+            $sumQuantity += $sq['quantity'];
+        }
+    }
+}
 
-$user = $_SESSION['user'];
 
 $sqlCat = "SELECT  * from `categories`";
 $stmt = $pdo->prepare($sqlCat);
 $stmt -> execute();
 $DataCat = $stmt->fetchAll(PDO::FETCH_ASSOC);
 $id = 1;
+
 if(!$_REQUEST){
     $sql = "SELECT * from `products` where category_id =".$id;
     $stmt = $pdo->prepare($sql);
     $stmt -> execute();
     $Data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }else{
-    
     $sql = "SELECT * from `products` where category_id =" . $_REQUEST['id'];
     $stmt = $pdo->prepare($sql);
     $stmt -> execute();
     $Data2 = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+
+    // echo $sumQuantity;
+    // print_r($quantityOrderItemsByOrderId);
+    // echo "</pre>";
 
 ?>
 
@@ -92,7 +116,7 @@ if(!$_REQUEST){
                     <li class="nav-item">
                         <a class="nav-link" href="#">Products</a>
                     </li>
-                    <?php if(isset($user)){  ?>
+                    <?php if(isset($_SESSION['user'])) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
                     </li>
@@ -110,7 +134,11 @@ if(!$_REQUEST){
                                             </svg>
                                         </span>
                                     </a>
-                                    <div id="myDiv">0</div>
+                                    <?php if(isset($_SESSION['order'])){ ?>
+                                    <div id="myDiv"><?= $sumQuantity ?></div>
+                                    <?php }else{ ?>
+                                        <div id="myDiv">0</div>
+                                    <?php } ?>
                                 </div>
                             </form>
                         </nav>
@@ -160,11 +188,12 @@ if(!$_REQUEST){
                                 <p class="card-text text-muted">Price: $<?= $pro['price'] ?></p>
                                 <p class="card-text text-muted">quntity: <?= $pro['amount'] ?></p>
 
-                                <!-- <form action="" method="get"> -->
-                                <input type="hidde" name="id" value="<?= $pro['id'] ?>">
-                                <input type="submit" onclick="storeProductId(this)" id="addProductButton"
-                                    class="btn1 btn btn-primary btn-sm" value="Add to Cart">
-                                <!-- </form> -->
+                                <form action="addOrder.php" method="get">
+                                    <input type="hidde" name="product_id" value="<?= $pro['id'] ?>">
+                                    <input type="hidde" name="price" value="<?= $pro['price'] ?>">
+                                    <input type="submit" id="addProductButton" class="btn1 btn btn-primary btn-sm"
+                                        value="Add to Cart">
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -181,10 +210,13 @@ if(!$_REQUEST){
                                 <p class="card-text text-muted">Price: $<?= $pro['price'] ?></p>
                                 <p class="card-text text-muted">quntity: <?= $pro['amount'] ?></p>
 
-                                <input type="hidde" name="id" id="productId" value="<?= $pro['id'] ?>">
-                                <input type="submit" onclick="storeProductId(this)" id="addProductButton"
-                                    class="btn1 btn btn-primary btn-sm" value="Add to Cart">
-
+                                <form action="addOrder.php" method="get">
+                                    <input type="hidde" name="product_id" value="<?= $pro['id'] ?>">
+                                    <input type="hidde" name="price" value="<?= $pro['price'] ?>">
+                                    <input type="submit" id="addProductButton" class="btn1 btn btn-primary btn-sm"
+                                        value="Add to Cart">
+                                </form>
+                                <!-- onclick="storeProductId(this)" -->
                             </div>
                         </div>
                     </div>

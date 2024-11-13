@@ -10,7 +10,7 @@ require "connection.php";
 
 
     $sql  = "UPDATE users SET `address` = "."'".$_REQUEST['addresss']."'".",
-        `phone` = "."'".$_REQUEST['addresss']."'".",
+        `phone` = "."'".$_REQUEST['phone']."'".",
           WHERE `id` =".$_REQUEST['id'];
     $stmt = $pdo->prepare($sql);
     $stmt ->execute();
