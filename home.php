@@ -1,6 +1,6 @@
 <?php
 require "connection.php";
-// session_start();
+session_start();
 
 // $_SESSION['user'] = $email;
 
@@ -107,17 +107,13 @@ $pages1 = ceil($total1 / $prePage1);
                         <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Products</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="home.php">Store</a>
                     </li>
+                    <?php if(isset($_SESSION['user'])) { ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                        <a class="nav-link" href="logout.php">Logout</a>
                     </li>
+                    <?php } ?>
                     <li class="nav-item">
                         <nav class="navbar navbar-light bg-light">
                             <form class="container-fluid">

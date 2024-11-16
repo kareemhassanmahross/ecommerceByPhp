@@ -16,7 +16,7 @@ if(isset($_SESSION['user'])){
         $stmt = $pdo->prepare($sqlGetOrderItemsByOrderId);
         $stmt -> execute();
         $quantityOrderItemsByOrderId = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $sumQuantity=0;
+        $sumQuantity = 0;
         foreach($quantityOrderItemsByOrderId as $sq){
             $sumQuantity += $sq['quantity'];
         }
@@ -111,11 +111,9 @@ if(!$_REQUEST){
                         <a class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Categories</a>
+                        <a class="nav-link" href="home.php">Stores</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Products</a>
-                    </li>
+
                     <?php if(isset($_SESSION['user'])) { ?>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
@@ -125,7 +123,7 @@ if(!$_REQUEST){
                         <nav class="navbar navbar-light bg-light">
                             <form class="container-fluid">
                                 <div class="input-group">
-                                    <a href="addOrder.php">
+                                    <a href="cart.php">
                                         <span class="input-group-text" id="basic-addon1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25"
                                                 fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
@@ -180,7 +178,7 @@ if(!$_REQUEST){
                     <?php foreach($Data2 as $pro){ ?>
                     <div class="col-6 col-md-4 col-lg-3 car">
                         <div class="card product-card">
-                            <img src="dashbord/products/imagesProduct/<?= $pro['image'] ?>"
+                            <img src="dashboard/imagesProduct/<?= $pro['image'] ?>"
                                 class="card-img-top product-image" alt="Product Image">
                             <div class="card-body text-center">
                                 <input type="hidden" class="id" name="id" value="<?= $pro['id'] ?>">
@@ -189,8 +187,8 @@ if(!$_REQUEST){
                                 <p class="card-text text-muted">quntity: <?= $pro['amount'] ?></p>
 
                                 <form action="addOrder.php" method="get">
-                                    <input type="hidde" name="product_id" value="<?= $pro['id'] ?>">
-                                    <input type="hidde" name="price" value="<?= $pro['price'] ?>">
+                                    <input type="hidden" name="product_id" value="<?= $pro['id'] ?>">
+                                    <input type="hidden" name="price" value="<?= $pro['price'] ?>">
                                     <input type="submit" id="addProductButton" class="btn1 btn btn-primary btn-sm"
                                         value="Add to Cart">
                                 </form>
@@ -202,7 +200,7 @@ if(!$_REQUEST){
                     <?php foreach($Data as $pro){ ?>
                     <div class="col-6 col-md-4 col-lg-3 car">
                         <div class="card product-card ">
-                            <img src="dashbord/products/imagesProduct/<?= $pro['image'] ?>"
+                            <img src="dashboard/imagesProduct/<?= $pro['image'] ?>"
                                 class="card-img-top product-image" alt="Product Image">
                             <div class="card-body text-center">
                                 <input type="hidden" class="id" name="id" value="<?= $pro['id'] ?>">
@@ -211,8 +209,8 @@ if(!$_REQUEST){
                                 <p class="card-text text-muted">quntity: <?= $pro['amount'] ?></p>
 
                                 <form action="addOrder.php" method="get">
-                                    <input type="hidde" name="product_id" value="<?= $pro['id'] ?>">
-                                    <input type="hidde" name="price" value="<?= $pro['price'] ?>">
+                                    <input type="hidden" name="product_id" value="<?= $pro['id'] ?>">
+                                    <input type="hidden" name="price" value="<?= $pro['price'] ?>">
                                     <input type="submit" id="addProductButton" class="btn1 btn btn-primary btn-sm"
                                         value="Add to Cart">
                                 </form>
