@@ -11,53 +11,66 @@ if (!isset($_SESSION['user'])) {
 require "connection.php";
 
 $email = $_SESSION['user'];
+if($email != "" ){
+    $sql = "SELECT * FROM `users` WHERE `email` ="."'".$email."'";
+    $stmt = $pdo->prepare($sql); 
+    $stmt -> execute();
+    $user = $stmt -> fetch(PDO::FETCH_ASSOC);
 
-$sql = "SELECT * FROM `users` WHERE `email` ="."'".$email."'";
-$stmt = $pdo->prepare($sql); 
-$stmt -> execute();
-$user = $stmt -> fetch(PDO::FETCH_ASSOC);
+    $sqlOrdersUser = "SELECT * FROM `orders` WHERE `user_id` ="."'".$user['id']."'"." AND status = 1 ORDER BY `date` DESC";
+    $stmt = $pdo->prepare($sqlOrdersUser); 
+    $stmt -> execute();
+    $userOrders = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+if ($userOrders != ""){
+    $sqlOrder_items = "SELECT * FROM `order_items` WHERE `order_id` ="."'".$userOrders['id']."'";
+    $stmt = $pdo->prepare($sqlOrder_items); 
+    $stmt -> execute();
+    $userOrder_items = $stmt -> fetchAll(PDO::FETCH_ASSOC);
 
 
-$sqlOrdersUser = "SELECT * FROM `orders` WHERE `user_id` ="."'".$user['id']."'"." AND status = 1 ORDER BY `date` DESC";
-$stmt = $pdo->prepare($sqlOrdersUser); 
-$stmt -> execute();
-$userOrders = $stmt -> fetch(PDO::FETCH_ASSOC);
+    $orderAndNameOfProducts = [];
+
+    foreach ($userOrder_items as $us){
+    $sqlOrderProductName = "SELECT `name`,`image`,`desc` FROM `products` WHERE `id` ="."'".$us['product_id']."'";
+    $stmt = $pdo->prepare($sqlOrderProductName); 
+    $stmt -> execute();
+    $OrderProductName = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            foreach($OrderProductName as $name) {
+                array_push($orderAndNameOfProducts,[
+                        "id" => $us['id'],
+                        "order_id" =>$us['order_id'],
+                        "nameProduct" => $name['name'],
+                        "image" => $name['image'],
+                        "desc" => $name['desc'],
+                        "quantity" => $us['quantity'],
+                        "price" => $us['price'],
+                        "total_price" => $us['price']*$us['quantity']
+                    ]);
+            }
+    }
+    // if(isset($orderAndNameOfProducts)){
+    //     echo "Kareem";
+    // }
+}
+    
+}
+  
+
+
+
+
 
 // echo "<pre>";
 // print_r($userOrders);
 // echo "</pre>";
 
-if($userOrders == ""){
-    header("Location: index.php");
-}
-    
-
-$sqlOrder_items = "SELECT * FROM `order_items` WHERE `order_id` ="."'".$userOrders['id']."'";
-$stmt = $pdo->prepare($sqlOrder_items); 
-$stmt -> execute();
-$userOrder_items = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+  
 
 
-$orderAndNameOfProducts = [];
 
-foreach ($userOrder_items as $us){
-$sqlOrderProductName = "SELECT `name`,`image`,`desc` FROM `products` WHERE `id` ="."'".$us['product_id']."'";
-$stmt = $pdo->prepare($sqlOrderProductName); 
-$stmt -> execute();
-$OrderProductName = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-foreach($OrderProductName as $name) {
-    array_push($orderAndNameOfProducts,[
-            "id" => $us['id'],
-            "order_id" =>$us['order_id'],
-            "nameProduct" => $name['name'],
-            "image" => $name['image'],
-            "desc" => $name['desc'],
-            "quantity" => $us['quantity'],
-            "price" => $us['price'],
-            "total_price" => $us['price']*$us['quantity']
-        ]);
-}
-}
+
+
 
  
 
@@ -76,11 +89,37 @@ foreach($OrderProductName as $name) {
     <title>Billing Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .quantity-wrapper {
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
 
+    .quantity-wrapper button {
+        width: 40px;
+        height: 40px;
+        border: none;
+        background-color: transparent;
+    }
+
+    .quantity-wrapper input {
+        width: 60px;
+        text-align: center;
+        border: none;
+        outline: none;
+    }
+
+    .quantity-wrapper button:hover {
+        background-color: #f8f9fa;
+    }
+    </style>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Brand Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -101,29 +140,6 @@ foreach($OrderProductName as $name) {
                         <a class="nav-link" href="logout.php">Logout</a>
                     </li>
                     <?php } ?>
-                    <!-- <li class="nav-item">
-                        <nav class="navbar navbar-light bg-light">
-                            <form class="container-fluid">
-                                <div class="input-group">
-                                    <a href="cart.php">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="25"
-                                                fill="currentColor" class="bi bi-cart2" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l1.25 5h8.22l1.25-5zM5 13a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-                                            </svg>
-                                        </span>
-                                    </a>
-                                    <?php if(isset($_SESSION['order'])){ ?>
-                                    <div id="myDiv"><?= $sumQuantity ?></div>
-                                    <?php }else{ ?>
-                                        <div id="myDiv">0</div>
-                                    <?php } ?>
-                                </div>
-                            </form>
-                        </nav>
-                    </li> -->
-
                 </ul>
             </div>
         </div>
@@ -153,7 +169,8 @@ foreach($OrderProductName as $name) {
             <div class="col-md-6">
                 <h4>Order Summary</h4>
                 <ul class="list-group mb-3" id="content">
-                    <?php $total_price = 0 ; ?>
+                    <?php if($userOrders != ""){
+                    $total_price = 0 ; ?>
                     <?php foreach ($orderAndNameOfProducts as $product) { ?>
                     <li class='list-group-item d-flex justify-content-between'>
                         <span><?= $product['nameProduct']?></span>
@@ -166,34 +183,91 @@ foreach($OrderProductName as $name) {
                         <span class='fw-bold'>Total Price :</span>
                         <span class='fw-bold'><?= $total_price?></span>
                     </li>
+                    <?php }?>
                 </ul>
             </div>
         </div>
-        <?php foreach($orderAndNameOfProducts  as $product){ ?>
-            <div class="card mt-5" style="">
+        <?php
+        if($userOrders != ""){
+        foreach($orderAndNameOfProducts  as $product){ ?>
+        <div class="card mt-5" style="">
             <div class="row g-0 ">
                 <div class="col-md-4">
-                    <img src="dashboard/imagesProduct/<?=$product['image']?>" class="img-fluid rounded-start" alt="...">
+                    <img src="dashboard/imagesProduct/<?=$product['image']?>" class="img-fluid rounded-start h-100"
+                        alt="...">
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <div class="card-body">
                         <h5 class="card-title"><?=$product['nameProduct']?></h5>
                         <p class="card-text"><?=$product['desc']?></p>
                         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                        <form action="deleteOrderItem.php" method="post">
-                            <input type="hidden" name="product_id" value = "<?=$product['id']?>">
-                            <input type="submit" class="btn btn-danger" value="Cancel">
-                        </form>
+                    </div>
+                </div>
+                <div class="col-md-2 border">
+                    <div class="card-body">
+                        <div class="quantity-wrapper">
+                            <button class="btn-decrease" data-id="<?php echo $product['id']; ?>">-</button>
+
+
+                            <input type="number" 
+                            class="quntityFromDataBase<?=$product['id'] ?>" 
+                            data-id="<?php echo $product['id']; ?>"
+                            value="<?php echo $product['quantity']; ?>" min="1">
+
+
+                            <button class="btn-increase" data-id="<?php echo $product['id']; ?>">+</button>
+                        </div>
+                        <div class="my-2  d-flex justify-content-center w-100">
+                            <form action="updatequntit.php" method="get">
+                                <div class="na">
+                                <input type="hidden" name="id" value="<?= $product['id']; ?>">
+                                    <input type="hidden" class="dataFromInput<?=$product['id'] ?>" id="updated-input-<?= $product['id'] ?>" name="newQuantity">
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Submit">
+                            </form>
+                        </div>
+                        <div class="dic  d-flex justify-content-center w-100">
+                            <form action="deleteOrderItem.php" method="post">
+                                <input type="hidden" name="product_id" value="<?=$product['id']?>">
+                                <input type="submit" class="btn btn-danger" value="Cancel">
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-            <?php } ?>
+        <?php }} ?>
     </div>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+ 
+    document.querySelectorAll('.btn-increase').forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.getAttribute('data-id'); 
+        const input = document.querySelector(`.quntityFromDataBase${id}`);
+        const dataInput = document.querySelector(`.dataFromInput${id}`);
+        console.log(dataInput);
 
+        input.value = parseInt(input.value) + 1; 
+        dataInput.value = input.value; 
+      });
+    });
+
+    document.querySelectorAll('.btn-decrease').forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.getAttribute('data-id'); 
+        const input = document.querySelector(`.quntityFromDataBase${id}`);
+        const dataInput = document.querySelector(`.dataFromInput${id}`);
+
+        if (parseInt(input.value) > 1) { 
+          input.value = parseInt(input.value) - 1; 
+          dataInput.value = input.value; 
+        }
+      });
+    });
+  </script>
 
 </body>
 

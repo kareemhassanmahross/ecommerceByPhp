@@ -1,7 +1,7 @@
 <?php
 require "connection.php";
 session_start();
-// echo $_SESSION['order'];
+// echo $_SESSION['user'];
 if(isset($_SESSION['user'])){
     $getUserId = "SELECT id FROM users WHERE email = "."'".$_SESSION['user']."'";
     $stmt = $pdo->prepare($getUserId);
